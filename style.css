@@ -1,0 +1,79 @@
+/*!
+Theme Name: Test Dev VN WP
+*/
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap");
+* {
+  box-sizing: border-box;
+  list-style: none;
+  margin: 0px;
+  padding: 0px;
+}
+
+body {
+  font-family: "Montserrat", sans-serif;
+}
+
+a {
+  text-decoration: none !important;
+  color: inherit;
+}
+
+h1 {
+  font-size: 40px;
+  font-weight: 800;
+  margin-bottom: 50px;
+}
+
+h2 {
+  font-size: 28px;
+  font-weight: 700;
+}
+
+h3 {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+p {
+  font-size: 16px;
+}
+
+figcaption {
+  font-size: 32px;
+  font-weight: 700;
+}
+
+.container-card {
+  margin-bottom: 30px;
+}
+.container-card .card {
+  height: 255px;
+  border-radius: 0;
+  border: none;
+  color: #FFFFFF;
+}
+.container-card:nth-child(5n+1) .card {
+  background-color: #4AB7CD;
+}
+.container-card:nth-child(5n+2) .card {
+  background-color: rgba(255, 206, 0, 0.9294117647);
+}
+.container-card:nth-child(5n+3) .card {
+  background-color: #7DA44A;
+}
+.container-card:nth-child(5n+4) .card {
+  background-color: #080D0D;
+  max-width: 47%;
+}
+.container-card:nth-child(5n+5) .card {
+  background-color: #FF0000;
+  max-width: 47%;
+}
+
+.top-text {
+  margin-bottom: 108px;
+}
+
+.bottom-text {
+  margin-top: 162px;
+}/*# sourceMappingURL=style.css.map */

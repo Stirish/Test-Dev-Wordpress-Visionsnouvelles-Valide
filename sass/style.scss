@@ -1,0 +1,15 @@
+/*!
+Theme Name: Test Dev VN WP
+*/
+
+// variables
+//mixins
+
+@import './bases/base';
+@import './bases/typography';
+
+@import './components/card';
+
+//layouts
+
+@import './pages/front-page';

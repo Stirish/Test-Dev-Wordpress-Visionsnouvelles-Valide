@@ -1,0 +1,38 @@
+.container-card  {
+    margin-bottom: 30px;
+    .card {
+        height: 255px;
+        border-radius: 0;
+        border: none;
+        color: #FFFFFF;
+    }
+    &:nth-child(5n+1){
+        .card{
+          background-color: #4AB7CD; 
+        }
+        
+    }
+    &:nth-child(5n+2){
+        .card{
+            background-color: #FFCE00ed;
+        }
+    }
+    &:nth-child(5n+3){
+        .card{
+            background-color: #7DA44A;  
+          }
+    }
+    &:nth-child(5n+4){
+        .card{
+            background-color: #080D0D;
+            max-width: 47%;
+          }
+    }
+    &:nth-child(5n+5){
+        .card{
+            background-color: #FF0000;
+            max-width: 47%;   
+          }
+    }
+
+}
