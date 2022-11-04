@@ -3,5 +3,14 @@
 }
 
 .bottom-text {
-    margin-top: 162px;
+    margin-top: 130px;
+    margin-bottom: 100px;
+    background-color: #F5F5F5;
+    padding-top: 32px;
+    padding-left: 95px;
+    padding-right: 95px;
+
+    &--author {
+        padding-bottom: 30px;
+    }
 }

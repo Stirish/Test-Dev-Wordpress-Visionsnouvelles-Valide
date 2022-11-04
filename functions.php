@@ -54,6 +54,32 @@ function testdevwp_init()
    ]);
 }
 
+function testdevwp_add_custom_service_box()
+{
+   add_meta_box('testdevwp_service_box', 'The box is big ?', 'testdevwp_render_service_box', 'services', 'side');
+}
+
+function testdevwp_render_service_box($post_id)
+{
+   $value = get_post_meta($post_id->ID, 'testdevwp_service_box', true);
+
+   ?>
+      <input type="checkbox" value="yes" name="testdevwp_service_box" <?= $value ==='yes' ? 'checked' : ''?>>
+      <label for="testdevwprenderserviceboxbig">Yes</label>
+   <?php
+}
+
+function testdevwp_save_service_box($post_id)
+{
+   if(!empty($_POST['testdevwp_service_box']) && $_POST['testdevwp_service_box'] === 'yes' ) {
+         update_post_meta($post_id, 'testdevwp_service_box', 'yes');
+   }else {
+         delete_post_meta($post_id, 'testdevwp_service_box');
+   }
+}
+
 add_action('init', 'testdevwp_init');
 add_action('after_setup_theme', 'testdevwp_supports');
 add_action('wp_enqueue_scripts', 'testdevwp_register_assets');
+add_action('add_meta_boxes', 'testdevwp_add_custom_service_box');
+add_action('save_post', 'testdevwp_save_service_box');

@@ -21,17 +21,15 @@
 
 <div class="row">
     <?php
+    
     $query = new WP_Query([
         'post_type' => 'services',
         'posts_per_page' => 5,
     ]);
+
     while ($query->have_posts()) : $query->the_post(); ?>  
-    <div class="container-card col-6">
-        <div>
-            <?php require('parts/card.php'); ?>
-        </div>    
-    </div>
-        <?php endwhile; ?>
+        <?php require('parts/card.php'); ?>
+    <?php endwhile; ?>
 </div>
 
 <figure class="bottom-text">
@@ -42,7 +40,7 @@
         <br />
         felis, sodales eleifend metus consectetur, bibendum interdum nunc. <b>Pierre qui roule n’amasse pas mousse.</b>
     </blockquote>
-    <figcaption>Alexis JUSKIWIESKI</figcaption>
+    <figcaption class="bottom-text--author">Alexis JUSKIWIESKI</figcaption>
 </figure>
 
 <?php get_footer() ?>

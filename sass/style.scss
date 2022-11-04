@@ -10,6 +10,7 @@ Theme Name: Test Dev VN WP
 
 @import './components/card';
 
-//layouts
+@import './layouts/header';
+@import './layouts/footer';
 
 @import './pages/front-page';

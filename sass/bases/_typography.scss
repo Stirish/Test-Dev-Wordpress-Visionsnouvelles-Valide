@@ -3,7 +3,7 @@ body {
 }
 
 a {
-    text-decoration: none  !important;
+    text-decoration: none !important;
     color: inherit;
 }
 
@@ -30,4 +30,21 @@ p {
 figcaption {
     font-size: 32px;
     font-weight: 700;
+}
+
+.footer {
+    font-size: 28px;
+    font-weight: 700;
+
+    &--text {
+        font-size: 28px;
+    }
+
+    &--link{
+        text-decoration: underline !important;
+
+        &:hover {
+            color: inherit;
+        }
+    }
 }
