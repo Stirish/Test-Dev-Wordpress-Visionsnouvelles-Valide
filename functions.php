@@ -5,7 +5,7 @@ function testdevwp_supports()
    add_theme_support('title-tag');
    add_theme_support('post-thumbnails');
 
-   add_image_size('single-services-img', 300, 300, true);
+   add_image_size('single-services-img', 350, 350, true);
 }
 
 function testdevwp_register_assets()
@@ -63,18 +63,18 @@ function testdevwp_render_service_box($post_id)
 {
    $value = get_post_meta($post_id->ID, 'testdevwp_service_box', true);
 
-   ?>
-      <input type="checkbox" value="yes" name="testdevwp_service_box" <?= $value ==='yes' ? 'checked' : ''?>>
-      <label for="testdevwprenderserviceboxbig">Yes</label>
-   <?php
+?>
+   <input type="checkbox" value="yes" name="testdevwp_service_box" <?= $value === 'yes' ? 'checked' : '' ?>>
+   <label for="testdevwprenderserviceboxbig">Yes</label>
+<?php
 }
 
 function testdevwp_save_service_box($post_id)
 {
-   if(!empty($_POST['testdevwp_service_box']) && $_POST['testdevwp_service_box'] === 'yes' ) {
-         update_post_meta($post_id, 'testdevwp_service_box', 'yes');
-   }else {
-         delete_post_meta($post_id, 'testdevwp_service_box');
+   if (!empty($_POST['testdevwp_service_box']) && $_POST['testdevwp_service_box'] === 'yes') {
+      update_post_meta($post_id, 'testdevwp_service_box', 'yes');
+   } else {
+      delete_post_meta($post_id, 'testdevwp_service_box');
    }
 }
 

@@ -1,26 +1,17 @@
-.header-container,
-.header-container-service {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 261px;
+.header-container {
+    padding: 93px 0;
     margin-bottom: 50px;
-    
-    img {
-        width: 100%;
-        z-index: 1;
-    }
+    background-color: #080D0D;
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
     
     svg {
-        position: absolute;
-        z-index: 2;
+        margin: 0 auto;
+        display: block;
     }
 }
 
-.header-container{
-    background: #080D0D;
-}
-
-.header-container-service {
-    background: #4AB7CD;
+.service-header {
+    background-color: #4AB7CD;
 }
