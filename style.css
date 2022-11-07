@@ -10,6 +10,15 @@ Theme Name: Test Dev VN WP
   padding: 0px;
 }
 
+html, body {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
 body {
   font-family: "Montserrat", sans-serif;
 }
@@ -83,30 +92,41 @@ figcaption {
   background-color: #FF0000;
 }
 
-.header-container {
+.header-container,
+.header-container-service {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 261px;
   margin-bottom: 50px;
-  background: #080D0D;
 }
-.header-container img {
+.header-container img,
+.header-container-service img {
   width: 100%;
   z-index: 1;
 }
-.header-container svg {
+.header-container svg,
+.header-container-service svg {
   position: absolute;
   z-index: 2;
+}
+
+.header-container {
+  background: #080D0D;
+}
+
+.header-container-service {
+  background: #4AB7CD;
 }
 
 .footer {
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 280px;
+  min-height: 280px;
   background-color: #080D0D;
   color: #FFFFFF;
+  margin-top: auto;
 }
 .footer--text {
   padding-top: 50px;

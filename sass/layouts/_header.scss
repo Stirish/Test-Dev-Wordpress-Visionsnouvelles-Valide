@@ -1,18 +1,26 @@
-.header-container {
+.header-container,
+.header-container-service {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 261px;
     margin-bottom: 50px;
-    background: #080D0D;
     
     img {
         width: 100%;
         z-index: 1;
     }
-
+    
     svg {
         position: absolute;
         z-index: 2;
     }
+}
+
+.header-container{
+    background: #080D0D;
+}
+
+.header-container-service {
+    background: #4AB7CD;
 }
