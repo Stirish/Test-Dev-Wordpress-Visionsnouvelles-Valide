@@ -8,17 +8,18 @@
                         'object_ids' => get_the_ID(),
                 ]); ?>
 
-                
-                <div class="service-type"> 
+
+                <div class="service-type">
                         <span>Type : </span>
                         <?php foreach ($services as $service) : ?>
-                        <a href="<?= get_term_link($service)?>">        
-                                <?= $service->name ?></a>
+                                <a href="<?= get_term_link($service) ?>">
+                                        <?= $service->name ?>
+                                </a>
                         <?php endforeach; ?>
                 </div>
                 <div class="service-article">
                         <?php the_post_thumbnail('single-services-img'); ?>
-                        
+
                         <?php the_content() ?>
                 </div>
 
