@@ -30,7 +30,7 @@ function testdevwp_init()
       'public' => true,
       'menu_position' => 3,
       //'menu_icon' => '',
-      'supports' => ['title', 'editor', 'thumbnail'],
+      'supports' => ['title', 'editor', 'thumbnail', 'page-attributes'],
       'show_in_rest' => true,
       'has_archive' => true,
    ]);
@@ -54,6 +54,8 @@ function testdevwp_init()
    ]);
 }
 
+// -------------------------------------------Service box
+
 function testdevwp_add_custom_service_box()
 {
    add_meta_box('testdevwp_service_box', 'The box is big ?', 'testdevwp_render_service_box', 'services', 'side');
@@ -64,13 +66,23 @@ function testdevwp_render_service_box($post_id)
    $value = get_post_meta($post_id->ID, 'testdevwp_service_box', true);
 
 ?>
-   <input type="checkbox" value="yes" name="testdevwp_service_box" <?= $value === 'yes' ? 'checked' : '' ?>>
+   <input type="checkbox" value="yes" name="testdevwp_service_box" id="testdevwprenderserviceboxbig" <?= $value === 'yes' ? 'checked' : '' ?>>
    <label for="testdevwprenderserviceboxbig">Yes</label>
 <?php
 }
 
 function testdevwp_save_service_box($post_id)
 {
+   // Enregistrement des données dans la base Wordpress.
+   // évite de perdre des données à cause de l'enregistrement automatique
+   if ((defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) || (defined('DOING_AJAX') && DOING_AJAX) || isset($_REQUEST['bulk_edit'])) {
+      return $post_id;
+   }
+   // Vérification des droits de l'utilisateur.
+   if (!current_user_can('edit_post', $post_id)) {
+      return $post_id;
+   }
+
    if (!empty($_POST['testdevwp_service_box']) && $_POST['testdevwp_service_box'] === 'yes') {
       update_post_meta($post_id, 'testdevwp_service_box', 'yes');
    } else {
@@ -78,8 +90,46 @@ function testdevwp_save_service_box($post_id)
    }
 }
 
+
+// -------------------------------------------Service price
+
+function testdevwp_add_custom_service_price()
+{
+   add_meta_box('testdevwp_service_price', 'service price ?', 'testdevwp_render_service_price', 'services', 'side');
+}
+
+function testdevwp_render_service_price($post)
+{
+   $value = get_post_meta($post->ID, 'testdevwp_service_price', true);
+?>
+   <form>
+      <label>
+         <input type="number" value="<?= $value ?>" name="testdevwp_service_price">
+      </label>
+   </form>
+
+<?php
+}
+
+function testdevwp_save_service_price($post_id)
+{
+
+   $input = $_POST['testdevwp_service_price'];
+
+   if (!empty($input)) {
+      update_post_meta($post_id, 'testdevwp_service_price', $input);
+   } else {
+      delete_post_meta($post_id, 'testdevwp_service_price');
+   }
+}
+
 add_action('init', 'testdevwp_init');
 add_action('after_setup_theme', 'testdevwp_supports');
 add_action('wp_enqueue_scripts', 'testdevwp_register_assets');
+
+// META BOX
 add_action('add_meta_boxes', 'testdevwp_add_custom_service_box');
 add_action('save_post', 'testdevwp_save_service_box');
+
+add_action('add_meta_boxes', 'testdevwp_add_custom_service_price');
+add_action('save_post', 'testdevwp_save_service_price');

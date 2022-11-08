@@ -26,6 +26,8 @@
     $query = new WP_Query([
         'post_type' => 'services',
         'posts_per_page' => 5,
+        'orderby' => 'menu_order',
+        'order' => 'ASC'
     ]);
 
     while ($query->have_posts()) : $query->the_post(); ?>
