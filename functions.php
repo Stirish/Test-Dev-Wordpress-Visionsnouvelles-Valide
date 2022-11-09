@@ -4,9 +4,10 @@ function testdevwp_supports()
 {
    add_theme_support('title-tag');
    add_theme_support('post-thumbnails');
-
    add_image_size('single-services-img', 350, 350, true);
 }
+add_action('after_setup_theme', 'testdevwp_supports');
+
 
 function testdevwp_register_assets()
 {
@@ -22,6 +23,8 @@ function testdevwp_register_assets()
    wp_enqueue_style('testdevwp-style', get_stylesheet_uri(), [], 1.0);
    wp_enqueue_style('testdevwp-bundle', get_template_directory_uri() . '/style.css', array(), 1.0);
 }
+add_action('wp_enqueue_scripts', 'testdevwp_register_assets');
+
 
 function testdevwp_init()
 {
@@ -53,6 +56,8 @@ function testdevwp_init()
       'show_admin_column' => true,
    ]);
 }
+add_action('init', 'testdevwp_init');
+
 
 // -------------------------------------------Service box
 
@@ -60,6 +65,8 @@ function testdevwp_add_custom_service_box()
 {
    add_meta_box('testdevwp_service_box', 'The box is big ?', 'testdevwp_render_service_box', 'services', 'side');
 }
+add_action('add_meta_boxes', 'testdevwp_add_custom_service_box');
+
 
 function testdevwp_render_service_box($post_id)
 {
@@ -89,6 +96,7 @@ function testdevwp_save_service_box($post_id)
       delete_post_meta($post_id, 'testdevwp_service_box');
    }
 }
+add_action('save_post', 'testdevwp_save_service_box');
 
 
 // -------------------------------------------Service price
@@ -97,6 +105,8 @@ function testdevwp_add_custom_service_price()
 {
    add_meta_box('testdevwp_service_price', 'service price ?', 'testdevwp_render_service_price', 'services', 'side');
 }
+add_action('add_meta_boxes', 'testdevwp_add_custom_service_price');
+
 
 function testdevwp_render_service_price($post)
 {
@@ -122,14 +132,39 @@ function testdevwp_save_service_price($post_id)
       delete_post_meta($post_id, 'testdevwp_service_price');
    }
 }
-
-add_action('init', 'testdevwp_init');
-add_action('after_setup_theme', 'testdevwp_supports');
-add_action('wp_enqueue_scripts', 'testdevwp_register_assets');
-
-// META BOX
-add_action('add_meta_boxes', 'testdevwp_add_custom_service_box');
-add_action('save_post', 'testdevwp_save_service_box');
-
-add_action('add_meta_boxes', 'testdevwp_add_custom_service_price');
 add_action('save_post', 'testdevwp_save_service_price');
+
+
+function SF_register_block_type()
+{   
+   acf_register_block_type([
+      'name' => 'citation_posts',
+      'title' => 'Bloc de citation (custom)',
+      'render_template' => 'blocks/block-citation.php',
+   ]);
+
+   acf_add_local_field_group([
+      'key' => 'Citation_group',
+      'title' => 'Citation',
+      'field' => [
+         [
+            'key' => 'citation_text',
+            'label' => 'Citation',
+            'name' => 'citation',
+            'type' => 'wysiwyg',
+         ],
+         [
+            'key' => 'citation_author',
+            'label' => 'Author',
+            'name' => 'author',
+            'type' => 'text',
+            
+         ],
+      ],
+      'location' => [
+         
+      ]
+
+   ]);
+}
+add_action('acf/init', 'SF_register_block_type');

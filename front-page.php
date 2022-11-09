@@ -10,19 +10,13 @@
 
 <?php get_header() ?>
 
-<h1 class="homepage-tilte">Test by Visionsnouvelles</h1>
-<p class="top-text">consectetur adipiscing elit. Nunc convallis sem eu scelerisque bibendum. Sed bibendum auctor libero porttitor dignissim. Curabitur id nisi
-    <br />
-    convallis, porta mauris vitae, ultricies nunc. Ut suscipit faucibus tempus. Aenean magna felis, sodales eleifend metus consectetur,
-    <br />
-    bibendum interdum nunc.
-    <br /><br />
-    <b>Cliquez sur le domaine qui vous correspond :</b>
-</p>
+<?php
+do_action('wptestdev_text_intro');
+?>
 
 <div class="row">
     <?php
-
+     global $post;
     $query = new WP_Query([
         'post_type' => 'services',
         'posts_per_page' => 5,
@@ -36,14 +30,10 @@
 </div>
 
 <figure class="bottom-text">
-    <blockquote>
-        <em>consectetur adipiscing elit. Nunc convallis sem eu scelerisque bibendum. Sed bibendum auctor libero porttitor
-            <br />
-            dignissim.</em> Curabitur id nisi convallis, porta mauris vitae, ultricies nunc. Ut suscipit faucibus tempus. Aenean magna
-        <br />
-        felis, sodales eleifend metus consectetur, bibendum interdum nunc. <b>Pierre qui roule n’amasse pas mousse.</b>
-    </blockquote>
-    <figcaption class="bottom-text--author">Alexis JUSKIWIESKI</figcaption>
+    <?= the_field('citation')?>
+    <figcaption class="bottom-text--author">
+  
+    </figcaption>
 </figure>
 
 <?php get_footer() ?>
