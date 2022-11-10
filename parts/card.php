@@ -6,7 +6,7 @@
 ]);
 
 $implode = implode(', ', array_column($services, 'name'));
-$col = 'col-3';
+$col = 'col-6 col-xl-3';
 $boxSizeChoice = get_post_meta(get_the_ID(), 'testdevwp_service_box', true);
 
 if (!empty($boxSizeChoice)) {

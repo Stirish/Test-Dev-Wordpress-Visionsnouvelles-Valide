@@ -135,18 +135,24 @@ function testdevwp_save_service_price($post_id)
 add_action('save_post', 'testdevwp_save_service_price');
 
 
+// ------------------ Block Gutenberg -----------------------
+
+if ( ! function_exists( 'SF_register_block_type' ) ) {
+	return;
+}
+
 function SF_register_block_type()
 {   
    acf_register_block_type([
-      'name' => 'citation_posts',
+      'name' => 'citation-posts',
       'title' => 'Bloc de citation (custom)',
-      'render_template' => 'blocks/block-citation.php',
+      'render_template' => 'blocks/citation-render.php',
    ]);
 
    acf_add_local_field_group([
-      'key' => 'Citation_group',
+      'key' => 'citation_group',
       'title' => 'Citation',
-      'field' => [
+      'fields' => [
          [
             'key' => 'citation_text',
             'label' => 'Citation',
@@ -162,9 +168,15 @@ function SF_register_block_type()
          ],
       ],
       'location' => [
-         
-      ]
-
+         [
+            [
+               'param' => 'block',
+               'operator' => '==',
+               'value' => 'acf/citation-posts',
+            ]
+         ]
+      ],
+      'active' => true,
    ]);
 }
 add_action('acf/init', 'SF_register_block_type');
