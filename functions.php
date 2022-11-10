@@ -180,3 +180,45 @@ function SF_register_block_type()
    ]);
 }
 add_action('acf/init', 'SF_register_block_type');
+
+
+//--------------Fontion pour prendre un template part----------------------------
+
+function vn_get_id_by_page_template($page_template)
+{
+   if ($page_template) {
+      $args = array(
+            'post_type' => 'page',
+            'posts_per_page' => 1,
+            'fields' => 'ids',
+            'orderby' => 'menu_order',
+            'order' => 'ASC',
+            'meta_key' => '_wp_page_template',
+            'meta_value' => $page_template,
+            'suppress_filters' => 0
+            //récupération de la page dans la langue courante
+      );
+      $page = get_posts($args);
+      $page_id = isset($page) && !empty($page) && count($page) > 0 ? $page[0] : false;
+      //page_id peut être l'ID de la page ou le lien de l'accueil
+   } else {
+      $page_id = false;
+   }
+
+   return $page_id;
+}
+
+function vn_get_permalink_by_page_template($page_template, $return_home_page_if_not_exist = true)
+{
+   if ($page_template) {
+      $page_id = vn_get_id_by_page_template($page_template);
+      //page_id peut être l'ID de la page ou le lien de l'accueil
+      $page_permalink = (is_int($page_id)) ? get_permalink($page_id) : false;
+      $page_permalink = (!$page_permalink && $return_home_page_if_not_exist) ? get_home_url() : $page_permalink;
+
+   } else {
+      $page_permalink = ($return_home_page_if_not_exist) ? get_home_url() : false;
+   }
+
+   return $page_permalink;
+}

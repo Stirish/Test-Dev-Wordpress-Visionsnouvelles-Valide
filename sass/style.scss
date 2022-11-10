@@ -9,9 +9,11 @@ Theme Name: Test Dev VN WP
 @import './bases/typography';
 
 @import './components/card';
+@import './components/form-btn';
 
 @import './layouts/header';
 @import './layouts/footer';
 
-@import './pages/front-page';
+@import './pages/page-front';
 @import './pages/single-page';
+@import './pages/page-contact';
