@@ -7,7 +7,8 @@
  * @package testdevvn
  */
 
-get_header() ?>
+get_header();
+?>
 
 <div class="row justify-content-center">
     <div class="col-8">
@@ -41,4 +42,6 @@ get_header() ?>
     </div>
 </div>
 
-<?php get_footer() ?>
+<?php 
+get_footer();
+?>
