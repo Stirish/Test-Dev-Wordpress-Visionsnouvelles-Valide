@@ -18,26 +18,27 @@ function testdevwp_submit_form()
         ],
         true
     );
-    
+
     if (empty($parameters)) {
         wp_send_json_error(['message' => esc_html('Please fill required fields!')]);
-    } 
-    
+    }
+
 
     $email = get_option('admin_email');
+    $redirectUrl = vn_get_permalink_by_page_template('page-template/page-confirmation.php');
 
-    if(wp_mail(
-        $email,
-        'Objet',
-        'Un message',
-    )) {
-        wp_send_json_success(['message' => esc_html('Message send !')]);
-    }
-    else {
+    if (wp_mail($email, 'Objet', 'Un message',)) {
+
+        wp_send_json_success(
+            [
+                'message' => esc_html('Message send !'),
+                'redirect' => $redirectUrl,
+            ]
+        );
+    } else {
+
         wp_send_json_error(['message' => esc_html('NOT OK!')]);
     }
-
-    
 }
 
 add_action('wp_ajax_testdevwp_submit_form', 'testdevwp_submit_form');

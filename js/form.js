@@ -21,6 +21,7 @@ jQuery(function ($) {
             success: function (response) {
                 if (response.success) {
                     form[0].reset();
+                    window.location.href = response.data.redirect;
                 }
             },
         })
