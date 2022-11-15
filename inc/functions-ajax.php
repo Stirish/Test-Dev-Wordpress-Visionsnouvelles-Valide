@@ -22,7 +22,22 @@ function testdevwp_submit_form()
     if (empty($parameters)) {
         wp_send_json_error(['message' => esc_html('Please fill required fields!')]);
     } 
-    wp_send_json_success(['message' => esc_html('Message send !')]); 
+    
+
+    $email = get_option('admin_email');
+
+    if(wp_mail(
+        $email,
+        'Objet',
+        'Un message',
+    )) {
+        wp_send_json_success(['message' => esc_html('Message send !')]);
+    }
+    else {
+        wp_send_json_error(['message' => esc_html('NOT OK!')]);
+    }
+
+    
 }
 
 add_action('wp_ajax_testdevwp_submit_form', 'testdevwp_submit_form');
