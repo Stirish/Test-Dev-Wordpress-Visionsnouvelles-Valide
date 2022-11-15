@@ -1,4 +1,4 @@
-<?php 
+<?php
 function checkRequireValue($requires = [], $sanitize = false)
 {
     $sanatize_array = [];
@@ -10,13 +10,13 @@ function checkRequireValue($requires = [], $sanitize = false)
 
         $result = (!$checkType) ? issetValueAndDontEmpty($value, [], $sanitize) : issetValueAndDontEmpty($key, $value, $sanitize);
 
-//        var_dump($key . ',' . $value . ' => ' . $result);
+        //        var_dump($key . ',' . $value . ' => ' . $result);
 
         if (!$result) {
             return null;
         } else {
             if ($sanitize) {
-                if($checkType){
+                if ($checkType) {
                     $sanatize_array[$key] = $result;
                 } else {
                     $sanatize_array[$value] = $result;
@@ -24,16 +24,16 @@ function checkRequireValue($requires = [], $sanitize = false)
             }
         }
     }
-    return (is_array($sanatize_array))? $sanatize_array : true;
+    return (is_array($sanatize_array)) ? $sanatize_array : true;
 }
 
 function issetValueAndDontEmpty($input, $type_check = [], $sanitize = false)
 {
     $result = false;
-    $result = (isset($_POST[$input]) && $_POST[$input] != '')? $_POST[$input] : $result;
-    $result = (isset($_FILES[$input]) && $_FILES[$input] != '')? $input : $result ;
+    $result = (isset($_POST[$input]) && $_POST[$input] != '') ? $_POST[$input] : $result;
+    $result = (isset($_FILES[$input]) && $_FILES[$input] != '') ? $input : $result;
 
-    if(empty($result)){
+    if (empty($result)) {
         return false;
     }
 
@@ -49,12 +49,12 @@ function checkType($input, $type_check, $sanitize = false)
                 if (!filter_var($input, FILTER_VALIDATE_EMAIL)) {
                     $return = false;
                 } else {
-                    $return = ($sanitize)? sanitize_email($input) : true;
+                    $return = ($sanitize) ? sanitize_email($input) : true;
                 }
                 break;
 
             case 'textarea':
-                $return = ($sanitize)? sanitize_textarea_field($input) : true;
+                $return = ($sanitize) ? sanitize_textarea_field($input) : true;
                 break;
 
             case 'int':
@@ -62,8 +62,8 @@ function checkType($input, $type_check, $sanitize = false)
                 break;
 
             case 'file':
-                if(checkTypeFile($input, $type_check)){
-                    if($sanitize){
+                if (checkTypeFile($input, $type_check)) {
+                    if ($sanitize) {
                         if (!function_exists('wp_handle_upload')) {
                             require_once(ABSPATH . 'wp-admin/includes/file.php');
                         }
@@ -76,33 +76,78 @@ function checkType($input, $type_check, $sanitize = false)
                             wp_send_json_error(array('message' => "<div class='alert alert-danger'>" . $message . "</div>"));
                         }
                         $return = $return['file'];
-                    }else{
+                    } else {
                         $return = true;
                     }
-                }else{
+                } else {
                     $return = false;
                 }
                 break;
 
             default:
-                wp_send_json_error(["message" => "<div class='alert alert-danger'>Type <u>" . $type_check['type']  . "</u> does not exist.</div>" ]);
+                wp_send_json_error(["message" => "<div class='alert alert-danger'>Type <u>" . $type_check['type']  . "</u> does not exist.</div>"]);
                 break;
         }
-    } else if($sanitize) {
+    } else if ($sanitize) {
         $return = sanitize_text_field($_POST[$input]);
     }
 
     return $return;
 }
 
-function checkTypeFile($input, $type_check){
-    if(!empty($type_check['min_size']) && $_FILES[$input]['size'] <= $type_check['min_size']){
+function checkTypeFile($input, $type_check)
+{
+    if (!empty($type_check['min_size']) && $_FILES[$input]['size'] <= $type_check['min_size']) {
         return false;
     }
 
-    if(!empty($type_check['max_size']) && $_FILES[$input]['size'] >= $type_check['max_size']){
+    if (!empty($type_check['max_size']) && $_FILES[$input]['size'] >= $type_check['max_size']) {
         return false;
     }
 
     return true;
+}
+
+function testdevwp_send_mail_info()
+{
+    $name = 'S.Florent';
+    $email = get_option('admin_email');
+
+    //$cc_fields = '';
+    //$bcc_fields = '';
+
+    $cc = [];
+    $bcc = [];
+    /*$cc_fields_array = explode(',', $cc_fields);
+    if (is_array($cc_fields_array)) {
+        foreach ($cc_fields_array as $cc_field) {
+            if (is_email($cc_field)) {
+                $cc[] = $cc_field;
+            }
+        }
+    }
+
+    
+    $bcc_fields_array = explode(',', $bcc_fields);
+    if (is_array($bcc_fields_array)) {
+        foreach ($bcc_fields_array as $bcc_field) {
+            if (is_email($bcc_field)) {
+                $bcc[] = $bcc_field;
+            }
+        }
+    }
+
+    
+    if( empty( $bcc ) ) {
+    $bcc[] = 'admin <' . get_option('admin_email') . '>';
+    }*/
+
+    $fields = [
+        'name'  => $name,
+        'email' => $email,
+        'cc'    => $cc,
+        'bcc'   => $bcc,
+    ];
+
+    return $fields;
 }

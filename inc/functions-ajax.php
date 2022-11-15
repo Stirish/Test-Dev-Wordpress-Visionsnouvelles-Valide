@@ -23,22 +23,33 @@ function testdevwp_submit_form()
         wp_send_json_error(['message' => esc_html('Please fill required fields!')]);
     }
 
+    $sendMailInfo = testdevwp_send_mail_info();
 
-    $email = get_option('admin_email');
+    $mailInfo = WP_Mail::init()
+
+    ->to($sendMailInfo['email'])
+    ->from(sprintf('%1$s %2$s <%3$s>', $parameters['first-name'], $parameters['last-name'], $parameters['email']))
+    ->bcc($sendMailInfo['bcc'])
+    ->cc($sendMailInfo['cc'])
+    ->subject(esc_html('Contact from your website'))
+    ->template(get_template_directory() . '/inc/email-templates/template-mail.php', $parameters)
+    ->send();
+
+    
+
+    if (!$mailInfo) {
+
+        wp_send_json_error(['message' => esc_html('Message not send !')]);
+    }
+    
     $redirectUrl = vn_get_permalink_by_page_template('page-template/page-confirmation.php');
 
-    if (wp_mail($email, 'Objet', 'Un message',)) {
-
-        wp_send_json_success(
-            [
-                'message' => esc_html('Message send !'),
-                'redirect' => $redirectUrl,
-            ]
-        );
-    } else {
-
-        wp_send_json_error(['message' => esc_html('NOT OK!')]);
-    }
+    wp_send_json_success(
+        [
+            'message' => esc_html('Message send !'),
+            'redirect' => $redirectUrl,
+        ]
+    );
 }
 
 add_action('wp_ajax_testdevwp_submit_form', 'testdevwp_submit_form');

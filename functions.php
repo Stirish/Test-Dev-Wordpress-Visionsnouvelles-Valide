@@ -238,3 +238,4 @@ function vn_get_permalink_by_page_template($page_template, $return_home_page_if_
 
 require get_template_directory() . '/inc/functions-ajax.php';
 require get_template_directory() . '/inc/testdevwp-functions.php';
+require get_template_directory() . '/inc/classes/class-wp-mail.php';
