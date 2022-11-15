@@ -19,9 +19,22 @@ function testdevwp_register_assets()
    wp_enqueue_style('bootstrap');
    wp_enqueue_script('bootstrap-js');
    wp_enqueue_script('jquery');
-   
    wp_enqueue_style('testdevwp-style', get_stylesheet_uri(), [], 1.0);
    wp_enqueue_style('testdevwp-bundle', get_template_directory_uri() . '/style.css', array(), 1.0);
+
+   wp_register_script('testdevwp-form-js', get_stylesheet_directory_uri() . '/js/form.js');
+
+   wp_localize_script(
+      'testdevwp-form-js',
+      'testdevwp_form_object',
+      [
+         'ajaxurl' => admin_url('admin-ajax.php'),
+         'formError' => esc_html__('Please fill required fields!', 'testdevwp'),
+      ]
+   );
+   
+   wp_enqueue_script('testdevwp-form-js');
+   
 }
 add_action('wp_enqueue_scripts', 'testdevwp_register_assets');
 
@@ -222,3 +235,6 @@ function vn_get_permalink_by_page_template($page_template, $return_home_page_if_
 
    return $page_permalink;
 }
+
+require get_template_directory() . '/inc/functions-ajax.php';
+require get_template_directory() . '/inc/testdevwp-functions.php';
