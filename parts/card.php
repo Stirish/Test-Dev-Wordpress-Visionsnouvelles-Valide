@@ -9,7 +9,7 @@ $services = get_terms([
 
 $implode = implode(', ', array_column($services, 'name'));
 $col = 'col-6 col-xl-3';
-$boxSizeChoice = get_post_meta(get_the_ID(), 'testdevwp_service_box', true);
+$boxSizeChoice = get_post_meta(get_the_ID(), ServiceBoxSize::META_KEY, true);
 
 if (!empty($boxSizeChoice)) {
     $col = 'col-6';

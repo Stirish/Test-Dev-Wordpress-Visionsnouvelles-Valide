@@ -112,11 +112,11 @@ function vn_get_permalink_by_page_template($page_template, $return_home_page_if_
    return $page_permalink;
 }
 
-// ------------------ Metaboxes 
+// ------------------ Metaboxes
 
 require get_template_directory() . '/inc/metaboxes/init.php'; 
 
-// ------------------ Block Gutenberg 
+// ------------------ Block Gutenberg
 
 require get_template_directory() . '/inc/gutenberg-blocks/init.php';
 

@@ -8,8 +8,8 @@
             'taxonomy' => 'services_types',
             'object_ids' => get_the_ID(),
         ]);
-
-        $prices = get_post_meta(get_the_ID(), 'testdevwp_service_price', true);
+ 
+        $prices = get_post_meta(get_the_ID(), ServicePrice::META_KEY, true);
 
         ?>
 
