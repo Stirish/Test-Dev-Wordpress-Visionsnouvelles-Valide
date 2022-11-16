@@ -71,131 +71,7 @@ function testdevwp_init()
 }
 add_action('init', 'testdevwp_init');
 
-
-// -------------------------------------------Service box
-
-function testdevwp_add_custom_service_box()
-{
-   add_meta_box('testdevwp_service_box', 'The box is big ?', 'testdevwp_render_service_box', 'services', 'side');
-}
-add_action('add_meta_boxes', 'testdevwp_add_custom_service_box');
-
-
-function testdevwp_render_service_box($post_id)
-{
-   $value = get_post_meta($post_id->ID, 'testdevwp_service_box', true);
-
-?>
-   <input type="checkbox" value="yes" name="testdevwp_service_box" id="testdevwprenderserviceboxbig" <?= $value === 'yes' ? 'checked' : '' ?>>
-   <label for="testdevwprenderserviceboxbig">Yes</label>
-<?php
-}
-
-function testdevwp_save_service_box($post_id)
-{
-   // Enregistrement des données dans la base Wordpress.
-   // évite de perdre des données à cause de l'enregistrement automatique
-   if ((defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) || (defined('DOING_AJAX') && DOING_AJAX) || isset($_REQUEST['bulk_edit'])) {
-      return $post_id;
-   }
-   // Vérification des droits de l'utilisateur.
-   if (!current_user_can('edit_post', $post_id)) {
-      return $post_id;
-   }
-
-   if (!empty($_POST['testdevwp_service_box']) && $_POST['testdevwp_service_box'] === 'yes') {
-      update_post_meta($post_id, 'testdevwp_service_box', 'yes');
-   } else {
-      delete_post_meta($post_id, 'testdevwp_service_box');
-   }
-}
-add_action('save_post', 'testdevwp_save_service_box');
-
-
-// -------------------------------------------Service price
-
-function testdevwp_add_custom_service_price()
-{
-   add_meta_box('testdevwp_service_price', 'service price ?', 'testdevwp_render_service_price', 'services', 'side');
-}
-add_action('add_meta_boxes', 'testdevwp_add_custom_service_price');
-
-
-function testdevwp_render_service_price($post)
-{
-   $value = get_post_meta($post->ID, 'testdevwp_service_price', true);
-?>
-   <form>
-      <label>
-         <input type="number" value="<?= $value ?>" name="testdevwp_service_price">
-      </label>
-   </form>
-
-<?php
-}
-
-function testdevwp_save_service_price($post_id)
-{
-
-   $input = $_POST['testdevwp_service_price'];
-
-   if (!empty($input)) {
-      update_post_meta($post_id, 'testdevwp_service_price', $input);
-   } else {
-      delete_post_meta($post_id, 'testdevwp_service_price');
-   }
-}
-add_action('save_post', 'testdevwp_save_service_price');
-
-
-// ------------------ Block Gutenberg -----------------------
-
-if ( ! function_exists( 'SF_register_block_type' ) ) {
-	return;
-}
-
-function SF_register_block_type()
-{   
-   acf_register_block_type([
-      'name' => 'citation-posts',
-      'title' => 'Bloc de citation (custom)',
-      'render_template' => 'blocks/citation-render.php',
-   ]);
-
-   acf_add_local_field_group([
-      'key' => 'citation_group',
-      'title' => 'Citation',
-      'fields' => [
-         [
-            'key' => 'citation_text',
-            'label' => 'Citation',
-            'name' => 'citation',
-            'type' => 'wysiwyg',
-         ],
-         [
-            'key' => 'citation_author',
-            'label' => 'Author',
-            'name' => 'author',
-            'type' => 'text',
-            
-         ],
-      ],
-      'location' => [
-         [
-            [
-               'param' => 'block',
-               'operator' => '==',
-               'value' => 'acf/citation-posts',
-            ]
-         ]
-      ],
-      'active' => true,
-   ]);
-}
-add_action('acf/init', 'SF_register_block_type');
-
-
-//--------------Fontion pour prendre un template part----------------------------
+//--------------Fontion pour prendre un template part
 
 function vn_get_id_by_page_template($page_template)
 {
@@ -235,6 +111,16 @@ function vn_get_permalink_by_page_template($page_template, $return_home_page_if_
 
    return $page_permalink;
 }
+
+// ------------------ Metaboxes 
+
+require get_template_directory() . '/inc/metaboxes/init.php'; 
+
+// ------------------ Block Gutenberg 
+
+require get_template_directory() . '/inc/gutenberg-blocks/init.php';
+
+// ------- Function AJAX pour traitement des données et envoi de mail
 
 require get_template_directory() . '/inc/functions-ajax.php';
 require get_template_directory() . '/inc/testdevwp-functions.php';
