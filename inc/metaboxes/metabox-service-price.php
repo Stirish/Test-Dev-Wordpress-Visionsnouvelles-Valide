@@ -3,6 +3,7 @@
 class ServicePrice
 {
     const META_KEY = 'testdevwp_service_price';
+    
     public static function register()
     {
         add_action('add_meta_boxes', [self::class, 'add']);

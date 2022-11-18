@@ -1,21 +1,27 @@
 <?php
 
-$services = get_terms(['taxonomy' => 'services_types']);
 $serviceHeader = '';
 $style = '';
 
+
+
 if (is_singular('services')) {
+
     $serviceHeader = 'service-header';
-} else {
-        if (is_tax('services_types')) {
-            $term = get_queried_object()->term_id;
-            $color = get_term_meta($term->term_id, 'testwp_term_color', true);
-            $style = 'background-color: '.$color.';';
-        }
+    $getId = get_the_terms(get_the_ID(), 'services_types');
+    $getValue = get_term_meta($getId[0]->term_id, 'services_types_header_color', true);
+    $style = 'background-color: '.$getValue.';';
+
+} else if (is_tax('services_types')) {
+    
+    $term = get_queried_object()->term_id;
+    $color = get_term_meta($term, 'services_types_header_color', true);
+    $style = 'background-color: '.$getValue.';';
+}
+else {
+
     $style = 'background-image:url(' . get_the_post_thumbnail_url(get_the_ID(), "full") . ');';
 }
-
-
 
 ?>
 
