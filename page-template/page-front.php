@@ -14,12 +14,12 @@ do_action('wptestdev_text_intro');
 <div class="row">
 
     <?php
-    $query = new WP_Query([
-        'post_type' => 'services',
-        'posts_per_page' => 5,
-        'orderby' => 'menu_order',
-        'order' => 'ASC'
-    ]);
+        $query = new WP_Query([
+            'post_type' => 'services',
+            'posts_per_page' => 5,
+            'orderby' => 'menu_order',
+            'order' => 'ASC'
+        ]);
 
     if ($query->have_posts()) {
 
@@ -28,10 +28,10 @@ do_action('wptestdev_text_intro');
         endwhile;
         wp_reset_postdata();
     }
-
     ?>
-</div>
 
+</div>
+<a href="<?php echo vn_get_permalink_by_page_template('page-template/page-search.php')?>" class="form-btn">Voir tout les service</a>
 <?php
 the_content();
 get_footer();

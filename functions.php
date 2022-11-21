@@ -68,7 +68,14 @@ function testdevwp_init()
       'hierarchical' => true,
       'show_admin_column' => true,
    ]);
+
+   add_rewrite_rule(
+      'search/page/([0-9]{1,})/?',
+      'index.php?',
+      'top');
 }
+   add_rewrite_rule('recherche/page/([^/]*)/?', 'index.php?pagename=recherche&paged=$matches[1]', 'top');
+   
 add_action('init', 'testdevwp_init');
 
 //--------------Fontion pour prendre un template part

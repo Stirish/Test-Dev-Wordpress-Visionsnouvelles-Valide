@@ -3,8 +3,6 @@
 $serviceHeader = '';
 $style = '';
 
-
-
 if (is_singular('services')) {
 
     $serviceHeader = 'service-header';
@@ -12,13 +10,15 @@ if (is_singular('services')) {
     $getValue = get_term_meta($getId[0]->term_id, 'services_types_header_color', true);
     $style = 'background-color: '.$getValue.';';
 
+} else if (is_page_template('page-template/page-search.php')) {
+
+    $serviceHeader = 'service-header';
+
 } else if (is_tax('services_types')) {
     
     $term = get_queried_object()->term_id;
     $color = get_term_meta($term, 'services_types_header_color', true);
-    $style = 'background-color: '.$getValue.';';
-}
-else {
+} else {
 
     $style = 'background-image:url(' . get_the_post_thumbnail_url(get_the_ID(), "full") . ');';
 }

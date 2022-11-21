@@ -14,7 +14,14 @@ $boxSizeChoice = get_post_meta(get_the_ID(), ServiceBoxSize::META_KEY, true);
 if (!empty($boxSizeChoice)) {
     $col = 'col-6';
 }
+
+if ($args['is_search_service']) {
+    $col = 'col-12';
+    $boxSizeChoice = '';
+}
+
 ?>
+
 <div class="container-card <?= $col ?>">
     <div>
         <a href="<?php the_permalink() ?>" class="card">

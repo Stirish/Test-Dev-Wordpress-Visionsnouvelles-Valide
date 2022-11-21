@@ -113,6 +113,12 @@ label {
   color: #FFFFFF;
 }
 
+.search-btn {
+  background-color: #4AB7CD;
+  color: #FFFFFF;
+  border: none;
+}
+
 .header-container {
   padding: 93px 0;
   margin-bottom: 50px;
