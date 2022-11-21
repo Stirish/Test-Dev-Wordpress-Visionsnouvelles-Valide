@@ -15,7 +15,7 @@ if (!empty($boxSizeChoice)) {
     $col = 'col-6';
 }
 
-if ($args['is_search_service']) {
+if (!empty($args['is_search_service']) && $args['is_search_service'] === true ) {
     $col = 'col-12';
     $boxSizeChoice = '';
 }
