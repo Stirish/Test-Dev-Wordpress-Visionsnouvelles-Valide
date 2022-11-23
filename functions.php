@@ -34,7 +34,6 @@ function testdevwp_register_assets()
    );
    
    wp_enqueue_script('testdevwp-form-js');
-   
 }
 add_action('wp_enqueue_scripts', 'testdevwp_register_assets');
 
@@ -103,6 +102,7 @@ function vn_get_id_by_page_template($page_template)
 
    return $page_id;
 }
+// ------------------ Fonctions perso
 
 function vn_get_permalink_by_page_template($page_template, $return_home_page_if_not_exist = true)
 {
@@ -119,11 +119,20 @@ function vn_get_permalink_by_page_template($page_template, $return_home_page_if_
    return $page_permalink;
 }
 
+function getPostValue($post_name)
+{
+   if (!empty($_POST[$post_name])) {
+      return wp_unslash($_POST[$post_name]);
+   } else {
+      return '';
+   }
+}
+
 // ------------------ Metaboxes
 
 require get_template_directory() . '/inc/metaboxes/init.php'; 
 
-// ------------------ Block Gutenberg
+// ------------------ Blocs Gutenberg
 
 require get_template_directory() . '/inc/gutenberg-blocks/init.php';
 
