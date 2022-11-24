@@ -9,13 +9,14 @@
 
 get_header();
 
-$terms = get_terms('services_types');
+//$terms = get_terms('services_types');
 
 global $wp_query;
 $tmp = $wp_query;
 
-$current = get_query_var('paged') ? get_query_var('paged') : 1;
+$paged = get_query_var('paged') ? get_query_var('paged') : 1;
 
+$services_types = '';
 if (!empty($_REQUEST['services-types'])) {
     $services_types = $_REQUEST['services-types'];
 } else {
@@ -23,12 +24,13 @@ if (!empty($_REQUEST['services-types'])) {
 }
 
 $services_types_args = '';
-if (!empty($_REQUEST['services-types'])) {
+if (!empty($services_types)) {
+    $services_slugs = explode('+', $services_types);
     $services_types = wp_strip_all_tags($services_types);
     $services_types_args = [
         'taxonomy' => 'services_types',
         'field' => 'slug',
-        'terms' => [$services_types],
+        'terms' => $services_slugs,
     ];
 }
 
@@ -37,7 +39,7 @@ $args = [
     'posts_per_page' => 4,
     'orderby' => 'menu_order',
     'order' => 'ASC',
-    'paged' => $current,
+    'paged' => $paged,
     'tax_query' => [
         'relation' => 'AND',
         $services_types_args,
@@ -55,7 +57,7 @@ global $post;
 ?>
 <div class="row">
     <div class="col-12">
-        <form action="<?= get_permalink($post->ID); ?>" method="GET">
+        <form action="<?= get_permalink($post->ID); ?>" method="POST">
             <div class="form-row mb-5">
                 <div class="form-group col-4 d-flex flex-column">
                     <label for="keyword">Votre recherche</label>
@@ -63,13 +65,26 @@ global $post;
                 </div>
                 <div class="form-group col-4 d-flex flex-column">
                     <label for="services-types">Catégories</label>
-                    <select id="inputState" class="form-control" name="services-types">
-                        <option value="">...</option>
 
-                        <?php foreach ($terms as $term) {
-                            echo '<option value=" ' . esc_html($term->slug) . ' ">' . apply_filters('the_title', $term->name) . '</option>';
-                        } ?>
-                    </select>
+                    <?php
+
+                    $services_key_value_array = [];
+                    if (!empty($services_slugs)) {
+                        foreach ($services_slugs as $service_slug) {
+                            $term = get_term_by('slug', $service_slug, 'services_types');
+                            $services_key_value_array[] = ["slug" => $term->slug, "name" => esc_html($term->name)];
+                        }
+                    }
+                    ?>
+
+                    <input
+                    type= 'text'
+                    class= 'form-control'
+                    name= 'services-types'
+                    id= 'services-types'
+                    data-default-values= '<?php if (!empty($services_key_value_array)) { echo wp_json_encode($services_key_value_array); } ?>'
+                    >
+
                 </div>
                 <div class="form-group col-4 d-flex align-items-end">
                     <button class="search-btn" type="submit">Rechercher</button>
@@ -87,10 +102,14 @@ global $post;
     if ($wp_query->have_posts()) {
 
         $big = 999999999;
+        $base = str_replace($big, '%#%', esc_url(get_pagenum_link($big)));
+        $curent_url = str_replace('%#%', $paged, $base);
+        
         $pagination = paginate_links([
-            'base' => str_replace($big, '%#%', esc_url(get_pagenum_link($big))),
+            'base' => $base,
+            'format' => '?paged=%#%',
             'total' => $wp_query->max_num_pages,
-            'current' => $current,
+            'current' => $paged,
         ]);
 
         while ($wp_query->have_posts()) : $wp_query->the_post();

@@ -15,10 +15,16 @@ function testdevwp_register_assets()
    wp_register_style('bootstrap', 'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css', []);
    wp_register_script('bootstrap-js', 'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js', ['popper', 'jquery'], false, true);
    wp_register_script('popper', 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js', [], false, true);
-   
+   wp_register_style('selectize', 'https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.15.2/css/selectize.bootstrap4.min.css', []);
+   wp_register_script('selectize-js', 'https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.15.2/js/selectize.min.js', [], false, true);
+
    wp_enqueue_style('bootstrap');
    wp_enqueue_script('bootstrap-js');
    wp_enqueue_script('jquery');
+
+   wp_enqueue_style('selectize');
+   wp_enqueue_script('selectize-js')
+   ;
    wp_enqueue_style('testdevwp-style', get_stylesheet_uri(), [], 1.0);
    wp_enqueue_style('testdevwp-bundle', get_template_directory_uri() . '/style.css', array(), 1.0);
 
@@ -34,6 +40,22 @@ function testdevwp_register_assets()
    );
    
    wp_enqueue_script('testdevwp-form-js');
+
+//------------------------------------------------//
+
+   wp_register_script('testdevwp-search-js', get_stylesheet_directory_uri() . '/js/search.js');
+
+   wp_localize_script(
+      'testdevwp-search-js',
+      'testdevwp_search_object',
+      [
+         'ajaxurl' => admin_url('admin-ajax.php'),
+         'formError' => esc_html__('Please fill required fields!', 'testdevwp'),
+      ]
+   );
+
+   wp_enqueue_script('testdevwp-search-js');
+
 }
 add_action('wp_enqueue_scripts', 'testdevwp_register_assets');
 
@@ -67,15 +89,27 @@ function testdevwp_init()
       'hierarchical' => true,
       'show_admin_column' => true,
    ]);
-
-   add_rewrite_rule(
-      'search/page/([0-9]{1,})/?',
-      'index.php?',
-      'top');
 }
-   add_rewrite_rule('recherche/page/([^/]*)/?', 'index.php?pagename=recherche&paged=$matches[1]', 'top');
-   
 add_action('init', 'testdevwp_init');
+
+//-------------- Rewrite rules
+
+function testdevwp_query_vars($query_vars)
+{
+   $query_vars[] = 'services-types';
+   $query_vars[] = 'paged';
+   return $query_vars;
+}
+add_filter('query_vars', 'testdevwp_query_vars');
+
+
+function testdevwp_rewrite_rules ()
+{
+   add_rewrite_rule('recherche/services-types/([^/]*)/page/([^/]*)/?', 'index.php?pagename=recherche&services-types=$matches[1]&paged=$matches[2]', 'top');
+   add_rewrite_rule('recherche/page/([^/]*)/?', 'index.php?pagename=recherche&paged=$matches[1]', 'top');
+}
+add_action('init', 'testdevwp_rewrite_rules', 10, 0);
+
 
 //--------------Fontion pour prendre un template part
 
@@ -138,6 +172,8 @@ require get_template_directory() . '/inc/gutenberg-blocks/init.php';
 
 // ------- Function AJAX pour traitement des données et envoi de mail
 
-require get_template_directory() . '/inc/functions-ajax.php';
-require get_template_directory() . '/inc/testdevwp-functions.php';
+require get_template_directory() . '/inc/ajax/functions-ajax.php';
+require get_template_directory() . '/inc/ajax/testdevwp-functions.php';
+require get_template_directory() . '/inc/ajax/testdevwp-autocomplete-services.php';
+
 require get_template_directory() . '/inc/classes/class-wp-mail.php';
