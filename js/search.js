@@ -5,10 +5,6 @@ jQuery(function ($) {
     let select = $("#services-types");
     let services_default_values = $("#services-types").data('default-values');
 
-    console.log('-- here --');
-    console.log(services_default_values);
-    console.log('-- END here --');
-
     select.selectize({
         options: services_default_values,
         preload: true,

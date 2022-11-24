@@ -9,11 +9,9 @@
 
 get_header();
 
-//$terms = get_terms('services_types');
-
 global $wp_query;
 $tmp = $wp_query;
-
+$add_args = [];
 $paged = get_query_var('paged') ? get_query_var('paged') : 1;
 
 $services_types = '';
@@ -103,19 +101,24 @@ global $post;
 
         $big = 999999999;
         $base = str_replace($big, '%#%', esc_url(get_pagenum_link($big)));
-        $curent_url = str_replace('%#%', $paged, $base);
         
-        $pagination = paginate_links([
+        if (!empty($services_types) && !stripos($base, '/services-types/' . $services_types)) {
+            $base = str_replace('page', 'services-types/' . $services_types . '/page', $base);
+        }
+
+        $pagination_args = [
             'base' => $base,
             'format' => '?paged=%#%',
             'total' => $wp_query->max_num_pages,
             'current' => $paged,
-        ]);
+            'add_args' => $add_args,
+        ];
 
         while ($wp_query->have_posts()) : $wp_query->the_post();
             get_template_part('parts/card', 'post', ['is_search_service' => true]);
         endwhile;
 
+        echo paginate_links($pagination_args);
         $wp_query = $tmp;
         wp_reset_postdata();
     } else {
